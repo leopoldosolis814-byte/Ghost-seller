@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgenteIA · Clientes 24/7 en Instagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d1a;--bg2:#12122a;--bg3:#1a1a35;
+  --purple:#6c47ff;--purple2:#8b6fff;
+  --cyan:#00e5c8;--cyan2:#33ffdd;
+  --white:#fff;--off:rgba(255,255,255,0.7);--dim:rgba(255,255,255,0.35);
+  --border:rgba(255,255,255,0.1);--card:rgba(255,255,255,0.05);--card2:rgba(255,255,255,0.09);
+  --green:#22c55e;--red:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;line-height:1.6;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.35;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(13,13,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{text-decoration:none;color:var(--dim);font-size:0.87rem;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{background:var(--cyan);color:#000 !important;padding:10px 24px;border-radius:100px;font-weight:700 !important;font-size:0.84rem !important;transition:all 0.2s !important;}
+.nav-cta:hover{background:var(--cyan2) !important;transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 24px 80px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(108,71,255,0.5) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 20% 80%,rgba(74,144,217,0.25) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 80% 60%,rgba(0,229,200,0.12) 0%,transparent 50%);z-index:0;}
+.hero-content{position:relative;z-index:1;max-width:740px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.3);color:var(--cyan);padding:7px 18px;border-radius:100px;font-size:0.76rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:30px;animation:fadeUp 0.5s ease both;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);}}
+.hero h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:22px;animation:fadeUp 0.6s 0.1s ease both;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:1.05rem;color:var(--off);font-weight:300;max-width:520px;margin:0 auto 36px;line-height:1.75;animation:fadeUp 0.6s 0.2s ease both;}
+.hero-btn{display:inline-block;background:#111;color:var(--cyan);padding:18px 48px;border-radius:100px;font-weight:700;font-size:1rem;text-decoration:none;border:1.5px solid rgba(0,229,200,0.3);transition:all 0.2s;animation:fadeUp 0.6s 0.3s ease both;cursor:pointer;font-family:'Outfit',sans-serif;}
+.hero-btn:hover{background:rgba(0,229,200,0.08);border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,229,200,0.18);}
+.hero-trust{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:28px;animation:fadeUp 0.6s 0.4s ease both;}
+.hero-trust span{font-size:0.8rem;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.hero-trust span::before{content:'✓';color:var(--cyan);font-weight:800;}
+.hero-platforms{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:44px;animation:fadeUp 0.6s 0.5s ease both;}
+.plat{padding:6px 16px;border:1px solid var(--border);border-radius:100px;font-size:0.76rem;font-weight:600;color:var(--dim);background:var(--card);}
+.plat.star{border-color:rgba(0,229,200,0.4);color:var(--cyan);background:rgba(0,229,200,0.07);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SECTIONS ── */
+.sec{padding:96px 48px;max-width:1200px;margin:0 auto;}
+.fullsec{padding:96px 48px;}
+.eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:13px;}
+.stitle{font-size:clamp(1.9rem,3.8vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-0.5px;margin-bottom:13px;}
+.stitle em{font-style:normal;background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ssub{font-size:0.98rem;color:var(--off);max-width:500px;line-height:1.75;margin-bottom:56px;font-weight:300;}
+
+/* ── CAPS ── */
+.caps-bg{background:linear-gradient(180deg,rgba(108,71,255,0.07) 0%,transparent 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.caps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.cap-card{background:var(--bg);padding:38px 30px;transition:background 0.2s;position:relative;overflow:hidden;}
+.cap-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple2));transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.cap-card:hover{background:var(--bg2);}
+.cap-card:hover::after{transform:scaleX(1);}
+.cap-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.12);}
+.cap-title{font-size:1.08rem;font-weight:700;margin-bottom:9px;}
+.cap-desc{font-size:0.85rem;color:var(--off);line-height:1.7;}
+
+/* ── FUNNEL ── */
+.funnel-wrap{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;backdrop-filter:blur(10px);}
+.funnel-bar{background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:7px;}
+.fbar-dot{width:10px;height:10px;border-radius:50%;}
+.fd-r{background:#ff5f57;}.fd-y{background:#febc2e;}.fd-g{background:#28c840;}
+.fbar-title{font-size:0.73rem;color:var(--dim);margin-left:8px;font-family:'Space Grotesk',sans-serif;}
+.funnel-steps{display:grid;grid-template-columns:repeat(4,1fr);}
+.fstep{padding:30px 22px;border-right:1px solid var(--border);}
+.fstep:last-child{border-right:none;}
+.fstep-num{font-size:2.2rem;font-weight:900;color:rgba(108,71,255,0.22);line-height:1;margin-bottom:12px;font-family:'Space Grotesk',sans-serif;}
+.fstep-title{font-weight:700;font-size:0.9rem;margin-bottom:7px;}
+.fstep-desc{font-size:0.8rem;color:var(--off);line-height:1.6;}
+.fstep-tag{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:100px;font-size:0.68rem;font-weight:700;}
+.tag-ig{background:rgba(155,89,255,0.18);border:1px solid rgba(155,89,255,0.35);color:#c084fc;}
+.tag-com{background:rgba(249,115,22,0.14);border:1px solid rgba(249,115,22,0.28);color:#fb923c;}
+.tag-x{background:rgba(74,144,217,0.14);border:1px solid rgba(74,144,217,0.28);color:#60a5fa;}
+
+/* ── DEMO ── */
+.demo-bg{background:linear-gradient(180deg,transparent,rgba(108,71,255,0.05),transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.demo-layout{display:grid;grid-template-columns:1fr 330px;gap:56px;align-items:start;}
+.dstep{display:flex;gap:18px;padding:26px 0;border-bottom:1px solid var(--border);}
+.dstep:last-child{border-bottom:none;}
+.dstep-num{font-size:1.3rem;font-weight:900;color:var(--purple2);flex-shrink:0;width:26px;font-family:'Space Grotesk',sans-serif;}
+.dstep-title{font-weight:700;font-size:0.92rem;margin-bottom:5px;}
+.dstep-desc{font-size:0.83rem;color:var(--off);line-height:1.6;}
+.dstep-quote{margin-top:9px;background:rgba(108,71,255,0.1);border-left:2px solid var(--purple2);padding:9px 12px;border-radius:0 7px 7px 0;font-size:0.8rem;color:rgba(255,255,255,0.82);font-style:italic;}
+.phone-outer{background:linear-gradient(145deg,#1a1a2e,#0d0d1a);border:1px solid var(--border);border-radius:30px;padding:13px;box-shadow:0 20px 56px rgba(108,71,255,0.18);position:sticky;top:110px;}
+.phone-notch{width:72px;height:5px;background:var(--border);border-radius:3px;margin:0 auto 14px;}
+.phone-screen{background:#0f0f1e;border-radius:20px;overflow:hidden;}
+.ig-bar{background:rgba(255,255,255,0.03);padding:13px 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border);}
+.ig-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
+.ig-un{font-size:0.75rem;font-weight:700;}
+.ig-st{font-size:0.62rem;color:var(--green);font-weight:600;}
+.ig-msgs{padding:12px;display:flex;flex-direction:column;gap:7px;min-height:240px;}
+.msg{padding:9px 13px;border-radius:15px;font-size:0.75rem;line-height:1.45;max-width:82%;}
+.msg.in{background:rgba(255,255,255,0.08);border-bottom-left-radius:4px;align-self:flex-start;}
+.msg.out{background:var(--purple);border-bottom-right-radius:4px;align-self:flex-end;}
+.msg-lbl{font-size:0.6rem;color:var(--dim);text-align:center;margin:2px 0;}
+.story-msg{background:linear-gradient(135deg,#6c47ff,#9b59ff,#00e5c8);border-radius:10px;padding:13px;color:white;font-size:0.73rem;font-weight:600;text-align:center;line-height:1.4;}
+
+/* ── PLANS ── */
+.plans-bg{background:linear-gradient(180deg,rgba(108,71,255,0.05) 0%,transparent 100%);border-top:1px solid var(--border);}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.plan-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:34px 26px;display:flex;flex-direction:column;transition:all 0.2s;backdrop-filter:blur(10px);}
+.plan-card:hover{border-color:var(--purple2);transform:translateY(-4px);box-shadow:0 14px 36px rgba(108,71,255,0.14);}
+.plan-card.featured{border-color:var(--cyan);background:rgba(0,229,200,0.04);}
+.plan-badge{font-size:0.63rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.plan-name{font-size:1.35rem;font-weight:800;margin-bottom:7px;}
+.plan-price{font-size:2.7rem;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:4px;}
+.plan-period{font-size:0.78rem;color:var(--dim);margin-bottom:28px;}
+.plan-feats{list-style:none;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.plan-feats li{font-size:0.83rem;color:var(--off);display:flex;gap:7px;align-items:flex-start;line-height:1.4;}
+.plan-feats li::before{content:'→';color:var(--cyan);font-weight:800;flex-shrink:0;}
+.plan-feats li.hi{color:var(--white);font-weight:600;}
+.btn-plan{display:block;text-align:center;padding:13px;border-radius:100px;font-weight:700;font-size:0.86rem;text-decoration:none;border:1px solid var(--border);color:var(--off);transition:all 0.2s;cursor:pointer;background:transparent;font-family:'Outfit',sans-serif;}
+.btn-plan:hover{border-color:var(--purple2);color:var(--white);}
+.btn-plan.featured{background:var(--cyan);border-color:var(--cyan);color:#000;}
+.btn-plan.featured:hover{background:var(--cyan2);}
+
+/* ── FAQ ── */
+.faq-wrap{max-width:660px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card);backdrop-filter:blur(10px);}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{padding:20px 26px;font-weight:600;font-size:0.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;transition:color 0.2s;user-select:none;}
+.faq-q:hover{color:var(--cyan);}
+.faq-plus{font-size:1.15rem;color:var(--cyan);flex-shrink:0;transition:transform 0.25s;}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s;color:var(--off);font-size:0.86rem;line-height:1.75;padding:0 26px;font-weight:300;}
+.faq-item.open .faq-a{max-height:200px;padding:0 26px 20px;}
+.faq-item.open .faq-plus{transform:rotate(45deg);}
+
+/* ── CTA ── */
+.cta-sec{padding:110px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-sec::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(108,71,255,0.13) 0%,transparent 70%);pointer-events:none;}
+.cta-sec h2{font-size:clamp(2rem,4vw,3.3rem);font-weight:900;max-width:620px;margin:0 auto 13px;letter-spacing:-0.5px;line-height:1.1;}
+.cta-sec h2 em{font-style:normal;background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cta-sub{color:var(--off);font-size:0.98rem;margin-bottom:40px;font-weight:300;}
+.btn-cta{display:inline-block;background:#111;color:var(--cyan);padding:17px 50px;border-radius:100px;font-weight:700;font-size:0.98rem;text-decoration:none;border:1.5px solid rgba(0,229,200,0.32);transition:all 0.2s;cursor:pointer;font-family:'Outfit',sans-serif;}
+.btn-cta:hover{background:rgba(0,229,200,0.07);transform:translateY(-3px);box-shadow:0 14px 36px rgba(0,229,200,0.14);}
+.cta-trust{display:flex;gap:28px;justify-content:center;margin-top:32px;flex-wrap:wrap;}
+.cta-trust span{font-size:0.76rem;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.cta-trust span::before{content:'✓';color:var(--cyan);font-weight:800;}
+footer{border-top:1px solid var(--border);padding:26px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-logo{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.footer-copy{font-size:0.76rem;color:var(--dim);}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+/* ════════════════════════════
+   WIZARD MODAL
+════════════════════════════ */
+.woverlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:16px;}
+.woverlay.open{display:flex;}
+.wbox{background:var(--bg2);border:1px solid var(--border);border-radius:22px;width:100%;max-width:800px;max-height:92vh;overflow-y:auto;padding:36px;position:relative;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.wclose{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--dim);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;}
+.wclose:hover{background:var(--card2);color:var(--white);}
+
+/* Progress 4 steps */
+.wprog{display:flex;margin-bottom:36px;}
+.wpstep{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative;}
+.wpstep:not(:last-child)::after{content:'';position:absolute;top:16px;left:50%;width:100%;height:2px;background:var(--border);z-index:0;transition:background 0.4s;}
+.wpstep.wdone:not(:last-child)::after,.wpstep.wact:not(:last-child)::after{background:var(--cyan);}
+.wpdot{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--dim);position:relative;z-index:1;transition:all 0.3s;}
+.wpstep.wact .wpdot{background:var(--purple);border-color:var(--purple);color:white;}
+.wpstep.wdone .wpdot{background:var(--cyan);border-color:var(--cyan);color:#000;}
+.wplbl{font-size:0.66rem;font-weight:600;color:var(--dim);text-align:center;}
+.wpstep.wact .wplbl{color:var(--white);}
+.wpstep.wdone .wplbl{color:var(--cyan);}
+
+/* Panels */
+.wpanel{display:none;animation:panIn 0.3s ease both;}
+.wpanel.wact{display:block;}
+@keyframes panIn{from{opacity:0;transform:translateY(11px);}to{opacity:1;transform:translateY(0);}}
+.weyebrow{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:9px;}
+.wtitle{font-size:1.6rem;font-weight:800;margin-bottom:7px;letter-spacing:-0.3px;}
+.wsub{font-size:0.86rem;color:var(--off);font-weight:300;line-height:1.6;margin-bottom:28px;}
+
+/* Form fields */
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.wgrid.ws{grid-template-columns:1fr;}
+.wf{display:flex;flex-direction:column;gap:5px;}
+.wf.w2{grid-column:span 2;}
+.wlbl{font-size:0.76rem;font-weight:700;color:var(--white);letter-spacing:0.2px;}
+.whint{font-size:0.69rem;color:var(--dim);}
+.win,.wsel,.wta{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;background:rgba(255,255,255,0.04);font-family:'Outfit',sans-serif;font-size:0.86rem;color:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;appearance:none;}
+.win::placeholder,.wta::placeholder{color:var(--dim);}
+.win:focus,.wsel:focus,.wta:focus{border-color:var(--purple2);box-shadow:0 0 0 3px rgba(108,71,255,0.13);}
+.win.err,.wsel.err,.wta.err{border-color:var(--red);}
+.wta{resize:vertical;min-height:78px;}
+.wselw{position:relative;}
+.wselw::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none;font-size:0.8rem;}
+.wsel option{background:#1a1a2e;color:var(--white);}
+.wdiv{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.wseclbl{font-size:0.65rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.wferr{font-size:0.68rem;color:var(--red);font-weight:600;display:none;}
+.wferr.show{display:block;}
+
+/* Chips */
+.wchips{display:flex;flex-wrap:wrap;gap:8px;}
+.wchip{padding:7px 15px;border:1.5px solid var(--border);border-radius:100px;font-size:0.78rem;font-weight:600;color:var(--dim);background:var(--card);cursor:pointer;transition:all 0.18s;user-select:none;font-family:'Outfit',sans-serif;}
+.wchip:hover{border-color:var(--purple2);color:var(--white);}
+.wchip.on{background:var(--purple);border-color:var(--purple);color:white;}
+
+/* Gender */
+.wgender{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.wgc{border:1.5px solid var(--border);border-radius:11px;padding:16px;cursor:pointer;background:var(--card);transition:all 0.2s;text-align:center;}
+.wgc:hover{border-color:var(--purple2);}
+.wgc.on{border-color:var(--purple);background:rgba(108,71,255,0.14);}
+.wgc-e{font-size:1.7rem;margin-bottom:5px;}
+.wgc-n{font-weight:700;font-size:0.88rem;}
+.wgc-s{font-size:0.7rem;color:var(--dim);margin-top:2px;}
+
+/* Tone */
+.wtone{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.wtc{border:1.5px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;background:var(--card);transition:all 0.2s;text-align:center;}
+.wtc:hover{border-color:var(--purple2);}
+.wtc.on{border-color:var(--cyan);background:rgba(0,229,200,0.05);}
+.wtc-e{font-size:1.25rem;margin-bottom:5px;}
+.wtc-n{font-weight:700;font-size:0.8rem;}
+.wtc-x{font-size:0.67rem;color:var(--dim);margin-top:3px;font-style:italic;line-height:1.3;}
+
+/* Schedule */
+.wscheds{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.wsc{padding:8px 5px;border:1.5px solid var(--border);border-radius:7px;font-size:0.7rem;font-weight:600;color:var(--dim);background:var(--card);cursor:pointer;transition:all 0.18s;text-align:center;user-select:none;font-family:'Outfit',sans-serif;}
+.wsc:hover{border-color:var(--purple2);color:var(--white);}
+.wsc.on{background:var(--purple);border-color:var(--purple);color:white;}
+
+/* ── PASO 4: BUILDER LANDING ── */
+.builder-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;}
+.btab{flex:1;padding:10px;text-align:center;font-size:0.78rem;font-weight:600;color:var(--dim);background:var(--card);cursor:pointer;transition:all 0.2s;border-right:1px solid var(--border);}
+.btab:last-child{border-right:none;}
+.btab.on{background:var(--purple);color:white;}
+.btab:hover:not(.on){color:var(--white);background:var(--card2);}
+
+.bpanel{display:none;}
+.bpanel.on{display:block;animation:panIn 0.25s ease both;}
+
+/* Product builder */
+.prod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.prod-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.prod-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prod-item-label{font-size:0.76rem;font-weight:700;color:var(--cyan);}
+.prod-del{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:6px;padding:4px 8px;font-size:0.7rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.prod-del:hover{background:rgba(239,68,68,0.25);}
+.prod-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.prod-fields .wf{gap:4px;}
+.prod-fields .wlbl{font-size:0.7rem;}
+.prod-fields .win{padding:8px 11px;font-size:0.8rem;}
+
+.btn-add-prod{width:100%;padding:10px;background:rgba(108,71,255,0.12);border:1px dashed rgba(108,71,255,0.35);border-radius:9px;color:var(--purple2);font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;}
+.btn-add-prod:hover{background:rgba(108,71,255,0.2);}
+
+/* Color pickers */
+.color-row{display:flex;gap:8px;align-items:center;}
+.color-row input[type=color]{width:44px;height:38px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;background:transparent;padding:2px;}
+
+/* Preview badge */
+.preview-note{background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);border-radius:9px;padding:12px 16px;font-size:0.78rem;color:var(--off);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.preview-note::before{content:'👁';font-size:1rem;}
+
+/* Botón "Comprá ya" preview */
+.compra-preview{background:linear-gradient(135deg,#ff5c00,#ff8c42);color:white;padding:14px 28px;border-radius:100px;font-weight:800;font-size:0.95rem;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;border:none;font-family:'Outfit',sans-serif;box-shadow:0 6px 24px rgba(255,92,0,0.3);}
+.compra-preview:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(255,92,0,0.4);}
+.compra-note{font-size:0.72rem;color:var(--dim);margin-top:8px;}
+
+/* Plan picker wizard */
+.wplans{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.wplan{border:1.5px solid var(--border);border-radius:13px;padding:18px 14px;cursor:pointer;background:var(--card);transition:all 0.2s;}
+.wplan:hover{border-color:var(--purple2);transform:translateY(-2px);}
+.wplan.on{border-color:var(--cyan);background:rgba(0,229,200,0.04);}
+.wplan-badge{font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:5px;}
+.wplan-name{font-size:1.05rem;font-weight:800;margin-bottom:4px;}
+.wplan-price{font-size:1.25rem;font-weight:900;margin-bottom:2px;}
+.wplan-period{font-size:0.7rem;color:var(--dim);margin-bottom:10px;}
+.wplan-feats{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.wplan-feats li{font-size:0.7rem;color:var(--off);display:flex;gap:4px;line-height:1.3;}
+.wplan-feats li::before{content:'→';color:var(--cyan);font-weight:700;flex-shrink:0;}
+
+/* Resumen */
+.wres-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;}
+.wres-title{font-weight:700;font-size:0.8rem;color:var(--white);margin-bottom:14px;}
+.wres-rows{display:flex;flex-direction:column;gap:8px;}
+.wres-row{display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;}
+.wres-k{color:var(--dim);}
+.wres-v{font-weight:600;color:var(--white);}
+.wres-tot{border-top:1px solid var(--border);padding-top:11px;margin-top:7px;}
+.wres-tot .wres-v{font-size:1.15rem;color:var(--cyan);}
+
+/* Pago */
+.wpago-note{font-size:0.72rem;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:5px;}
+
+/* Nav */
+.wnav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:22px;border-top:1px solid var(--border);}
+.wbback{background:transparent;border:1.5px solid var(--border);color:var(--dim);padding:11px 22px;border-radius:100px;font-family:'Outfit',sans-serif;font-size:0.83rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.wbback:hover{border-color:var(--white);color:var(--white);}
+.wbnext{background:linear-gradient(135deg,var(--purple),var(--purple2));color:white;padding:12px 34px;border-radius:100px;font-family:'Outfit',sans-serif;font-size:0.88rem;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;}
+.wbnext:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(108,71,255,0.32);}
+.wbnext:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* Success */
+.wsuccess{display:none;text-align:center;padding:36px 0;animation:panIn 0.4s ease both;}
+.wsuccess.on{display:block;}
+.wsuccess-icon{width:68px;height:68px;background:linear-gradient(135deg,var(--cyan),var(--purple2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 22px;}
+.wsuccess-title{font-size:1.7rem;font-weight:800;margin-bottom:9px;}
+.wsuccess-sub{font-size:0.88rem;color:var(--off);max-width:400px;margin:0 auto 32px;line-height:1.7;font-weight:300;}
+.wsuccess-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;}
+.wsc-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px 10px;text-align:center;}
+.wsc-icon{font-size:1.3rem;margin-bottom:7px;}
+.wsc-lbl{font-size:0.62rem;color:var(--dim);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.wsc-val{font-size:1rem;font-weight:800;color:var(--cyan);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){.demo-layout{grid-template-columns:1fr;}.phone-outer{position:static;max-width:320px;}.funnel-steps{grid-template-columns:repeat(2,1fr);}.fstep:nth-child(2){border-right:none;}.fstep:nth-child(1),.fstep:nth-child(2){border-bottom:1px solid var(--border);}.caps-grid{grid-template-columns:repeat(2,1fr);}.plans-grid{grid-template-columns:1fr;}.wsuccess-cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){nav{padding:14px 18px;}.nav-links{display:none;}.sec,.fullsec{padding:68px 18px;}.caps-grid{grid-template-columns:1fr;}.funnel-steps{grid-template-columns:1fr;}.fstep{border-right:none !important;border-bottom:1px solid var(--border);}.fstep:last-child{border-bottom:none;}.cta-sec{padding:72px 18px;}.wbox{padding:20px 14px;}.wgrid{grid-template-columns:1fr;}.wf.w2{grid-column:span 1;}.wtone{grid-template-columns:1fr;}.wscheds{grid-template-columns:repeat(2,1fr);}.wplans{grid-template-columns:1fr;}.prod-fields{grid-template-columns:1fr;}.wsuccess-cards{grid-template-columns:repeat(2,1fr);}.builder-tabs{flex-wrap:wrap;}.btab{flex:none;width:50%;}.wgender{grid-template-columns:1fr 1fr;}footer{flex-direction:column;text-align:center;padding:20px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">AgenteIA</div>
+  <div class="nav-links">
+    <a href="#capacidades">Qué hace</a>
+    <a href="#flujo">Cómo funciona</a>
+    <a href="#planes">Planes</a>
+    <a href="#" onclick="openWizard();return false;" class="nav-cta">Activar mi agente →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><div class="badge-dot"></div>Agente activo 24/7</div>
+    <h1>Tu Agente IA que consigue<br>clientes <em>24/7 en Instagram</em></h1>
+    <p class="hero-sub">Prospecta en Reddit, Twitter y foros. Los lleva a tu micro-landing personalizada. Cierra la venta con descuento especial — sin que toques el teléfono.</p>
+    <button onclick="openWizard()" class="hero-btn">Quiero mi Agente IA →</button>
+    <div class="hero-trust">
+      <span>Conectado con Instagram Graph API</span>
+      <span>Sin riesgo de bloqueo</span>
+      <span>Activación en 48 hs</span>
+      <span>Micro-landing incluida</span>
+    </div>
+    <div class="hero-platforms">
+      <div class="plat star">Instagram ★</div>
+      <div class="plat">Reddit</div>
+      <div class="plat">Twitter / X</div>
+      <div class="plat">Facebook</div>
+      <div class="plat">Foros</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPACIDADES -->
+<div class="fullsec caps-bg" id="capacidades">
+  <div class="sec" style="padding-top:0;padding-bottom:0">
+    <p class="eyebrow">Qué hace tu agente</p>
+    <h2 class="stitle">Seis acciones concretas,<br><em>resultado real</em></h2>
+    <p class="ssub">No es un chatbot básico. Prospecta, publica y convierte de forma autónoma. Incluye tu micro-landing con botón de venta directa.</p>
+    <div class="caps-grid">
+      <div class="cap-card reveal"><div class="cap-icon">🔍</div><div class="cap-title">Monitorea comunidades</div><p class="cap-desc">Rastrea Reddit, Twitter y foros buscando personas con intención de compra real de tu tipo de producto.</p></div>
+      <div class="cap-card reveal"><div class="cap-icon">💬</div><div class="cap-title">Comenta y genera tráfico</div><p class="cap-desc">Aporta valor y dirige cada lead a tu micro-landing personalizada, no a tu perfil de Instagram directo.</p></div>
+      <div class="cap-card reveal"><div class="cap-icon">🛍</div><div class="cap-title">Micro-landing con catálogo</div><p class="cap-desc">Tu página de producto con catálogo, precios, redes sociales y botón "Comprá ya" con descuento exclusivo.</p></div>
+      <div class="cap-card reveal"><div class="cap-icon">🎬</div><div class="cap-title">Historias automáticas</div><p class="cap-desc">Publica historias en Instagram según el calendario que configurás. Tu cuenta siempre activa.</p></div>
+      <div class="cap-card reveal"><div class="cap-icon">📩</div><div class="cap-title">Cierra por el botón "Comprá ya"</div><p class="cap-desc">Cuando el cliente toca el botón de descuento, el agente lo atiende al instante y cierra la venta.</p></div>
+      <div class="cap-card reveal"><div class="cap-icon">📊</div><div class="cap-title">Reporta resultados diarios</div><p class="cap-desc">Resumen diario con ventas cerradas, leads que pasaron por la landing y conversaciones pendientes.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- FLUJO -->
+<div class="sec" id="flujo">
+  <p class="eyebrow">El proceso completo</p>
+  <h2 class="stitle">De la comunidad a la venta,<br><em>en cuatro pasos</em></h2>
+  <p class="ssub">Tu agente recorre todo el embudo solo. La micro-landing es el puente entre el prospecto y la venta.</p>
+  <div class="funnel-wrap reveal">
+    <div class="funnel-bar">
+      <div class="fbar-dot fd-r"></div><div class="fbar-dot fd-y"></div><div class="fbar-dot fd-g"></div>
+      <div class="fbar-title">AgenteIA · Flujo activo</div>
+    </div>
+    <div class="funnel-steps">
+      <div class="fstep"><div class="fstep-num">01</div><div class="fstep-title">Detecta la oportunidad</div><p class="fstep-desc">Monitorea comunidades con intención de compra real. Identifica el lead ideal para tu rubro.</p><span class="fstep-tag tag-com">Reddit</span> <span class="fstep-tag tag-x">Twitter / X</span></div>
+      <div class="fstep"><div class="fstep-num">02</div><div class="fstep-title">Lleva a tu micro-landing</div><p class="fstep-desc">Comenta con valor y deja el link de tu landing personalizada. El lead ve tu catálogo completo.</p><span class="fstep-tag tag-com">Link único</span></div>
+      <div class="fstep"><div class="fstep-num">03</div><div class="fstep-title">"Comprá ya" con descuento</div><p class="fstep-desc">El cliente toca el botón especial. El agente lo atiende al instante con una oferta exclusiva.</p><span class="fstep-tag tag-ig">Agente cierra</span></div>
+      <div class="fstep"><div class="fstep-num">04</div><div class="fstep-title">Venta cerrada</div><p class="fstep-desc">Toma el pedido, envía el pago, coordina entrega. Las redes quedan para el comercio. Vos ves el resultado.</p><span class="fstep-tag tag-ig">Instagram DM</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="fullsec demo-bg">
+  <div class="sec" style="padding-top:0;padding-bottom:0">
+    <p class="eyebrow">Ejemplo real</p>
+    <h2 class="stitle">Así se ve una venta cerrada</h2>
+    <div class="demo-layout">
+      <div>
+        <div class="dstep reveal"><div class="dstep-num">1</div><div><div class="dstep-title">El agente detecta un lead en Reddit</div><p class="dstep-desc">Alguien pregunta por hamburguesas artesanales en Corrientes. El agente identifica intención de compra real.</p><div class="dstep-quote">"¿Alguien sabe de hamburguesería casera en Corrientes? Las del súper son malísimas."</div></div></div>
+        <div class="dstep reveal"><div class="dstep-num">2</div><div><div class="dstep-title">Comenta y deja el link de la landing</div><p class="dstep-desc">Responde de forma natural, aporta valor y deja el link de la micro-landing del negocio.</p><div class="dstep-quote">"Yo probé las de @tu_marca, son caseras de verdad. Acá tienen todo el menú: tu-marca.vercel.app"</div></div></div>
+        <div class="dstep reveal"><div class="dstep-num">3</div><div><div class="dstep-title">El lead ve la landing y toca "Comprá ya"</div><p class="dstep-desc">Ve el catálogo, el precio, los testimonios. Toca el botón naranja de descuento especial. El agente lo atiende en 8 segundos.</p></div></div>
+        <div class="dstep reveal"><div class="dstep-num">4</div><div><div class="dstep-title">Venta cerrada. Pedido confirmado.</div><p class="dstep-desc">El agente tomó el pedido y mandó el link de pago. Las redes quedan visibles para quien quiera seguirte. Vos te despertás con la venta hecha.</p></div></div>
+      </div>
+      <div>
+        <div class="phone-outer">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ig-bar">
+              <div class="ig-av">🍔</div>
+              <div><div class="ig-un">tu_marca</div><div class="ig-st">● En línea ahora</div></div>
+            </div>
+            <div class="ig-msgs">
+              <div class="msg-lbl">Llegó desde tu micro-landing</div>
+              <div class="story-msg">🔥 Oferta especial<br><span style="font-weight:400;font-size:0.68rem;opacity:0.85">20% OFF · Solo por este link</span></div>
+              <div class="msg in">Hola! Vi el menú en la página. ¿Aplica el descuento?</div>
+              <div class="msg out">¡Hola! Sí, tenés 20% OFF por llegar por este link 🎉 ¿Qué combo te gustó?</div>
+              <div class="msg in">El doble cheddar con papas.</div>
+              <div class="msg out">Perfecto 🔥 Con descuento son $7.120. Te mando el link de pago 👇</div>
+              <div class="msg-lbl" style="color:var(--green);font-weight:700">✓ Venta cerrada · 4 min · 2:38 AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLANES -->
+<div class="fullsec plans-bg" id="planes">
+  <div class="sec" style="padding-top:0;padding-bottom:0">
+    <p class="eyebrow">Precios</p>
+    <h2 class="stitle">Planes que escalan con vos</h2>
+    <p class="ssub">Sin permanencia. La micro-landing está incluida en todos los planes.</p>
+    <div class="plans-grid">
+      <div class="plan-card reveal">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">$9.900</div>
+        <div class="plan-period">ARS / mes</div>
+        <ul class="plan-feats">
+          <li>Micro-landing incluida</li>
+          <li>Botón "Comprá ya" con agente</li>
+          <li>DMs automáticos</li>
+          <li>1 cuenta de Instagram</li>
+          <li>Hasta 300 conversaciones/mes</li>
+        </ul>
+        <button onclick="openWizard()" class="btn-plan">Empezar →</button>
+      </div>
+      <div class="plan-card featured reveal">
+        <div class="plan-badge">★ Más elegido</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$19.900</div>
+        <div class="plan-period">ARS / mes</div>
+        <ul class="plan-feats">
+          <li class="hi">Prospección en Reddit, Twitter y foros</li>
+          <li class="hi">Micro-landing con catálogo completo</li>
+          <li class="hi">Botón "Comprá ya" + descuento automático</li>
+          <li class="hi">Historias automáticas</li>
+          <li>Conversaciones ilimitadas</li>
+          <li>Flujos personalizados por rubro</li>
+        </ul>
+        <button onclick="openWizard()" class="btn-plan featured">Activar mi agente →</button>
+      </div>
+      <div class="plan-card reveal">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">$34.900</div>
+        <div class="plan-period">ARS / mes</div>
+        <ul class="plan-feats">
+          <li>Todo lo del plan Pro</li>
+          <li>Múltiples cuentas y landings</li>
+          <li>IA entrenada a medida</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <button onclick="openWizard()" class="btn-plan">Contactar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sec">
+  <p class="eyebrow">Preguntas frecuentes</p>
+  <h2 class="stitle" style="margin-bottom:44px">Lo que más nos preguntan</h2>
+  <div class="faq-wrap">
+    <div class="faq-item"><div class="faq-q">¿Hay riesgo de que me baneen la cuenta? <span class="faq-plus">+</span></div><div class="faq-a">El agente opera con límites diarios que simulan comportamiento humano. Nunca superamos los umbrales que Instagram detecta como spam.</div></div>
+    <div class="faq-item"><div class="faq-q">¿Cuánto tarda en estar listo? <span class="faq-plus">+</span></div><div class="faq-a">En menos de 48 horas tu agente y tu micro-landing están activos. El proceso de configuración lo hacés vos mismo en el wizard.</div></div>
+    <div class="faq-item"><div class="faq-q">¿Cómo funciona el botón "Comprá ya"? <span class="faq-plus">+</span></div><div class="faq-a">Es un botón diferenciado en tu micro-landing que activa el agente directamente. Cuando el cliente lo toca, el agente lo atiende con una oferta especial de descuento y cierra la venta. Las redes sociales quedan como links independientes para tráfico orgánico.</div></div>
+    <div class="faq-item"><div class="faq-q">¿Puedo intervenir en las conversaciones? <span class="faq-plus">+</span></div><div class="faq-a">Sí. El agente escala a vos los leads de alto valor. Podés tomar el control de cualquier conversación en cualquier momento.</div></div>
+    <div class="faq-item"><div class="faq-q">¿La prospección en comunidades es segura? <span class="faq-plus">+</span></div><div class="faq-a">Sí. El agente aporta valor genuino en cada comentario, cumpliendo las reglas de cada plataforma. No hace spam masivo.</div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-sec">
+  <h2>Tu negocio no debería depender<br>de que estés <em>siempre conectado</em></h2>
+  <p class="cta-sub">Configurá tu agente y tu micro-landing en minutos. Empezá a cerrar ventas esta noche.</p>
+  <button onclick="openWizard()" class="btn-cta">Quiero mi Agente IA →</button>
+  <div class="cta-trust">
+    <span>Sin permanencia</span><span>Activación en 48 hs</span><span>Sin riesgo de bloqueo</span><span>Micro-landing incluida</span>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">AgenteIA</div>
+  <div class="footer-copy">© 2025 · Todos los derechos reservados</div>
+</footer>
+
+<!-- ═══════════════════════
+     WIZARD MODAL
+═══════════════════════ -->
+<div class="woverlay" id="woverlay" onclick="handleOvClick(event)">
+  <div class="wbox" id="wbox">
+    <div class="wclose" onclick="closeWizard()">✕</div>
+
+    <!-- PROGRESS 4 STEPS -->
+    <div class="wprog" id="wprog">
+      <div class="wpstep wact" data-s="1"><div class="wpdot">1</div><div class="wplbl">Tu negocio</div></div>
+      <div class="wpstep" data-s="2"><div class="wpdot">2</div><div class="wplbl">Tu agente</div></div>
+      <div class="wpstep" data-s="3"><div class="wpdot">3</div><div class="wplbl">Tu landing</div></div>
+      <div class="wpstep" data-s="4"><div class="wpdot">4</div><div class="wplbl">Plan y pago</div></div>
+    </div>
+
+    <!-- ── PASO 1: NEGOCIO ── -->
+    <div class="wpanel wact" id="wp1">
+      <div class="weyebrow">Paso 1 de 4</div>
+      <h2 class="wtitle">Contanos sobre tu negocio</h2>
+      <p class="wsub">Esta info le enseña a tu agente cómo hablar de lo que vendés y a quién buscar.</p>
+
+      <div class="wseclbl">Datos básicos</div>
+      <div class="wgrid">
+        <div class="wf"><label class="wlbl">Nombre del negocio *</label><input class="win" id="w1nombre" placeholder="Ej: El Puis Hamburguesería"><span class="wferr" id="e-w1nombre">Obligatorio</span></div>
+        <div class="wf"><label class="wlbl">Rubro *</label><div class="wselw"><select class="wsel" id="w1rubro"><option value="">Seleccioná tu rubro</option><option>Gastronomía</option><option>Barbería / Peluquería</option><option>Nail Studio / Estética</option><option>Ropa y Accesorios</option><option>Servicios profesionales</option><option>Productos artesanales</option><option>Otro</option></select></div><span class="wferr" id="e-w1rubro">Seleccioná un rubro</span></div>
+        <div class="wf"><label class="wlbl">Ciudad donde operás *</label><input class="win" id="w1ciudad" placeholder="Ej: Corrientes"><span class="wferr" id="e-w1ciudad">Obligatorio</span></div>
+        <div class="wf"><label class="wlbl">Usuario de Instagram *</label><input class="win" id="w1ig" placeholder="@tu_usuario"><span class="wferr" id="e-w1ig">Obligatorio</span></div>
+      </div>
+      <hr class="wdiv">
+      <div class="wseclbl">Tu propuesta de valor</div>
+      <div class="wgrid">
+        <div class="wf w2"><label class="wlbl">¿Qué vendés exactamente? *</label><div class="whint">Como si se lo explicaras a un amigo.</div><textarea class="wta" id="w1prod" placeholder="Ej: Hamburguesas artesanales con pan casero, carne a la parrilla y salsas propias..."></textarea><span class="wferr" id="e-w1prod">Obligatorio</span></div>
+        <div class="wf"><label class="wlbl">Precio promedio *</label><input class="win" id="w1precio" placeholder="Ej: $8.500"><span class="wferr" id="e-w1precio">Obligatorio</span></div>
+        <div class="wf"><label class="wlbl">Tu diferencial *</label><input class="win" id="w1dif" placeholder="Ej: Envío en 30 min, ingredientes propios"><span class="wferr" id="e-w1dif">Obligatorio</span></div>
+        <div class="wf w2"><label class="wlbl">Objeciones comunes de tus clientes</label><div class="whint">¿Qué dudan antes de comprar? Tu agente sabrá cómo responderlas.</div><textarea class="wta" id="w1obj" placeholder="Ej: Preguntan si hay envío rápido, si aceptan transferencia..."></textarea></div>
+      </div>
+      <div class="wnav"><div></div><button class="wbnext" onclick="wGo(2)">Siguiente → Tu agente</button></div>
+    </div>
+
+    <!-- ── PASO 2: AGENTE ── -->
+    <div class="wpanel" id="wp2">
+      <div class="weyebrow">Paso 2 de 4</div>
+      <h2 class="wtitle">Configurá tu agente</h2>
+      <p class="wsub">Cómo va a ser, cómo va a hablar y dónde va a buscar clientes.</p>
+
+      <div class="wseclbl">Identidad</div>
+      <div class="wgrid">
+        <div class="wf"><label class="wlbl">Nombre del agente *</label><div class="whint">Con este nombre se presenta.</div><input class="win" id="w2nombre" placeholder="Ej: Valentina, Lucas..."><span class="wferr" id="e-w2nombre">Obligatorio</span></div>
+        <div class="wf"><label class="wlbl">Tu email *</label><input class="win" id="w2email" placeholder="tu@email.com"><span class="wferr" id="e-w2email">Email inválido</span></div>
+      </div>
+      <div class="wf" style="margin-bottom:16px"><label class="wlbl" style="margin-bottom:10px;display:block">Género *</label>
+        <div class="wgender">
+          <div class="wgc" onclick="selGender(this,'femenino')"><div class="wgc-e">👩</div><div class="wgc-n">Femenino</div><div class="wgc-s">Valentina, Sofía...</div></div>
+          <div class="wgc" onclick="selGender(this,'masculino')"><div class="wgc-e">👨</div><div class="wgc-n">Masculino</div><div class="wgc-s">Lucas, Matías...</div></div>
+        </div>
+      </div>
+
+      <hr class="wdiv">
+      <div class="wseclbl">Tono de comunicación</div>
+      <div class="wf" style="margin-bottom:16px">
+        <div class="wtone">
+          <div class="wtc" onclick="selTone(this,'amigable')"><div class="wtc-e">😊</div><div class="wtc-n">Amigable</div><div class="wtc-x">"¡Hola! Te ayudo con el pedido 🙌"</div></div>
+          <div class="wtc" onclick="selTone(this,'profesional')"><div class="wtc-e">🎯</div><div class="wtc-n">Profesional</div><div class="wtc-x">"Buenos días, con gusto lo asesoro."</div></div>
+          <div class="wtc" onclick="selTone(this,'directo')"><div class="wtc-e">⚡</div><div class="wtc-n">Directo</div><div class="wtc-x">"El combo sale $8.900. ¿Lo hacemos?"</div></div>
+        </div>
+      </div>
+
+      <hr class="wdiv">
+      <div class="wseclbl">Prospección</div>
+      <div class="wgrid">
+        <div class="wf w2"><label class="wlbl">Zona donde buscar clientes *</label><div class="whint">El agente filtra las comunidades por esta zona.</div><input class="win" id="w2zona" placeholder="Ej: CABA, Córdoba, todo el país..."><span class="wferr" id="e-w2zona">Obligatorio</span></div>
+      </div>
+      <div class="wf" style="margin-bottom:16px"><label class="wlbl" style="margin-bottom:10px;display:block">Plataformas de prospección</label>
+        <div class="wchips">
+          <div class="wchip" onclick="this.classList.toggle('on')">Reddit</div>
+          <div class="wchip" onclick="this.classList.toggle('on')">Twitter / X</div>
+          <div class="wchip" onclick="this.classList.toggle('on')">Grupos de Facebook</div>
+          <div class="wchip" onclick="this.classList.toggle('on')">Foros</div>
+          <div class="wchip" onclick="this.classList.toggle('on')">Instagram comentarios</div>
+        </div>
+      </div>
+
+      <hr class="wdiv">
+      <div class="wseclbl">Horario activo</div>
+      <div class="wscheds">
+        <div class="wsc" onclick="this.classList.toggle('on')">🌅 6–9 AM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">☀️ 9–12 PM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">🌤 12–3 PM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">🌇 3–6 PM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">🌆 6–9 PM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">🌙 9–12 AM</div>
+        <div class="wsc" onclick="this.classList.toggle('on')">🦉 12–6 AM</div>
+        <div class="wsc on" onclick="this.classList.toggle('on')">⚡ 24 horas</div>
+      </div>
+
+      <div class="wnav"><button class="wbback" onclick="wGo(1)">← Volver</button><button class="wbnext" onclick="wGo(3)">Siguiente → Tu landing</button></div>
+    </div>
+
+    <!-- ── PASO 3: BUILDER LANDING ── -->
+    <div class="wpanel" id="wp3">
+      <div class="weyebrow">Paso 3 de 4</div>
+      <h2 class="wtitle">Armá tu micro-landing</h2>
+      <p class="wsub">Esta es la página donde tu agente va a llevar los prospectos. El botón "Comprá ya" activa el agente con descuento.</p>
+
+      <div class="preview-note">Todos los cambios se guardan automáticamente. Tu landing estará lista al activar el agente.</div>
+
+      <div class="builder-tabs">
+        <div class="btab on" onclick="switchTab(this,'tb-info')">🏪 Info</div>
+        <div class="btab" onclick="switchTab(this,'tb-hero')">🖼 Hero</div>
+        <div class="btab" onclick="switchTab(this,'tb-prods')">📦 Productos</div>
+        <div class="btab" onclick="switchTab(this,'tb-boton')">🔥 Botón compra</div>
+        <div class="btab" onclick="switchTab(this,'tb-redes')">📲 Redes</div>
+        <div class="btab" onclick="switchTab(this,'tb-colores')">🎨 Colores</div>
+      </div>
+
+      <!-- Tab: Info -->
+      <div class="bpanel on" id="tb-info">
+        <div class="wgrid">
+          <div class="wf"><label class="wlbl">Nombre del negocio</label><input class="win" id="l-nombre" placeholder="Ej: El Puis"></div>
+          <div class="wf"><label class="wlbl">WhatsApp</label><input class="win" id="l-wsp" placeholder="+54 9 379..."></div>
+          <div class="wf"><label class="wlbl">Logo URL</label><input class="win" id="l-logo" placeholder="https://..."></div>
+          <div class="wf"><label class="wlbl">Copyright footer</label><input class="win" id="l-footer" placeholder="© 2025 El Puis"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Hero -->
+      <div class="bpanel" id="tb-hero">
+        <div class="wgrid ws">
+          <div class="wf"><label class="wlbl">Título principal</label><input class="win" id="l-htitulo" placeholder="Ej: Las mejores hamburguesas de Corrientes"></div>
+          <div class="wf"><label class="wlbl">Subtítulo</label><textarea class="wta" id="l-hsub" placeholder="Descripción corta y llamativa..."></textarea></div>
+          <div class="wf"><label class="wlbl">Imagen hero URL</label><input class="win" id="l-himg" placeholder="https://..."></div>
+          <div class="wf"><label class="wlbl">Texto del botón CTA</label><input class="win" id="l-hboton" placeholder="Ver el menú completo"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Productos -->
+      <div class="bpanel" id="tb-prods">
+        <div class="prod-list" id="prod-list"></div>
+        <button class="btn-add-prod" onclick="addProd()">+ Agregar producto</button>
+      </div>
+
+      <!-- Tab: Botón compra -->
+      <div class="bpanel" id="tb-boton">
+        <div class="wgrid ws">
+          <div class="wf"><label class="wlbl">Texto del botón "Comprá ya"</label><input class="win" id="l-btntext" placeholder="Comprá ya 🔥 -20% OFF" value="Comprá ya 🔥 -20% OFF"></div>
+          <div class="wf"><label class="wlbl">Descuento % que ofrece el agente</label><div class="whint">El agente mencionará este % cuando el cliente toque el botón.</div><input class="win" id="l-descuento" placeholder="20" value="20"></div>
+          <div class="wf"><label class="wlbl">Mensaje de apertura del agente</label><div class="whint">Primera respuesta automática cuando alguien toca el botón.</div><textarea class="wta" id="l-msgagente" placeholder="¡Hola! Llegaste por el link especial 🎉 Tenés 20% OFF hoy. ¿Qué producto te interesa?"></textarea></div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="wseclbl">Vista previa del botón</div>
+          <button class="compra-preview" id="btn-preview">Comprá ya 🔥 -20% OFF</button>
+          <div class="compra-note">Este botón aparece destacado en tu micro-landing. Al tocarlo, activa el agente.</div>
+        </div>
+      </div>
+
+      <!-- Tab: Redes -->
+      <div class="bpanel" id="tb-redes">
+        <p style="font-size:0.82rem;color:var(--off);margin-bottom:16px;font-weight:300;">Estos links aparecen en tu landing como opciones adicionales. El cliente puede ir a tus redes si quiere, pero el botón "Comprá ya" es el que activa el agente y cierra la venta.</p>
+        <div class="wgrid ws">
+          <div class="wf"><label class="wlbl">Instagram URL</label><input class="win" id="l-ig" placeholder="https://instagram.com/tu_usuario"></div>
+          <div class="wf"><label class="wlbl">Facebook URL</label><input class="win" id="l-fb" placeholder="https://facebook.com/..."></div>
+          <div class="wf"><label class="wlbl">TikTok URL</label><input class="win" id="l-tk" placeholder="https://tiktok.com/@..."></div>
+          <div class="wf"><label class="wlbl">Sitio web / e-commerce</label><input class="win" id="l-web" placeholder="https://tu-tienda.com"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Colores -->
+      <div class="bpanel" id="tb-colores">
+        <div class="wgrid ws">
+          <div class="wf"><label class="wlbl">Color primario</label><div class="color-row"><input type="color" id="l-c1" value="#6c47ff"><input class="win" id="l-c1t" value="#6c47ff" style="flex:1"></div></div>
+          <div class="wf"><label class="wlbl">Color secundario</label><div class="color-row"><input type="color" id="l-c2" value="#8b6fff"><input class="win" id="l-c2t" value="#8b6fff" style="flex:1"></div></div>
+          <div class="wf"><label class="wlbl">Color acento</label><div class="color-row"><input type="color" id="l-c3" value="#00e5c8"><input class="win" id="l-c3t" value="#00e5c8" style="flex:1"></div></div>
+        </div>
+      </div>
+
+      <div class="wnav"><button class="wbback" onclick="wGo(2)">← Volver</button><button class="wbnext" onclick="wGo(4)">Siguiente → Plan y pago</button></div>
+    </div>
+
+    <!-- ── PASO 4: PLAN Y PAGO ── -->
+    <div class="wpanel" id="wp4">
+      <div class="weyebrow">Paso 4 de 4</div>
+      <h2 class="wtitle">Elegí tu plan y activá</h2>
+      <p class="wsub">Sin permanencia. La micro-landing está incluida en todos los planes.</p>
+
+      <div class="wseclbl">Seleccioná tu plan</div>
+      <div class="wplans">
+        <div class="wplan" onclick="selPlan(this,'Starter','9.900')"><div class="wplan-name">Starter</div><div class="wplan-price">$9.900</div><div class="wplan-period">ARS / mes</div><ul class="wplan-feats"><li>Micro-landing incluida</li><li>Botón "Comprá ya"</li><li>DMs automáticos</li></ul></div>
+        <div class="wplan on" onclick="selPlan(this,'Pro','19.900')"><div class="wplan-badge">★ Más elegido</div><div class="wplan-name">Pro</div><div class="wplan-price">$19.900</div><div class="wplan-period">ARS / mes</div><ul class="wplan-feats"><li>Prospección en comunidades</li><li>Landing + botón con descuento</li><li>Historias automáticas</li><li>Ilimitado</li></ul></div>
+        <div class="wplan" onclick="selPlan(this,'Enterprise','34.900')"><div class="wplan-name">Enterprise</div><div class="wplan-price">$34.900</div><div class="wplan-period">ARS / mes</div><ul class="wplan-feats"><li>Todo el plan Pro</li><li>Múltiples cuentas</li><li>IA a medida</li></ul></div>
+      </div>
+
+      <div class="wres-box">
+        <div class="wres-title">📋 Resumen de tu configuración</div>
+        <div class="wres-rows">
+          <div class="wres-row"><span class="wres-k">Negocio</span><span class="wres-v" id="r-neg">—</span></div>
+          <div class="wres-row"><span class="wres-k">Instagram</span><span class="wres-v" id="r-ig">—</span></div>
+          <div class="wres-row"><span class="wres-k">Agente</span><span class="wres-v" id="r-agt">—</span></div>
+          <div class="wres-row"><span class="wres-k">Zona de prospección</span><span class="wres-v" id="r-zona">—</span></div>
+          <div class="wres-row"><span class="wres-k">Landing</span><span class="wres-v" id="r-land">—</span></div>
+          <div class="wres-row"><span class="wres-k">Botón de compra</span><span class="wres-v" id="r-btn">—</span></div>
+          <div class="wres-row wres-tot"><span class="wres-k">Total mensual</span><span class="wres-v" id="r-total">$19.900 ARS</span></div>
+        </div>
+      </div>
+
+      <hr class="wdiv">
+      <div class="wseclbl">Datos de pago</div>
+      <div class="wpago-note">🔒 Pago seguro. No almacenamos datos de tarjeta.</div>
+      <div class="wgrid">
+        <div class="wf w2"><label class="wlbl">Nombre en la tarjeta *</label><input class="win" id="w4pnombre" placeholder="Como figura en tu tarjeta"><span class="wferr" id="e-w4pnombre">Obligatorio</span></div>
+        <div class="wf w2"><label class="wlbl">Número de tarjeta *</label><input class="win" id="w4pnum" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"><span class="wferr" id="e-w4pnum">Número inválido</span></div>
+        <div class="wf"><label class="wlbl">Vencimiento *</label><input class="win" id="w4pvenc" placeholder="MM/AA" maxlength="5" oninput="fmtExp(this)"><span class="wferr" id="e-w4pvenc">Fecha inválida</span></div>
+        <div class="wf"><label class="wlbl">CVV *</label><input class="win" id="w4pcvv" placeholder="000" maxlength="4"><span class="wferr" id="e-w4pcvv">Obligatorio</span></div>
+      </div>
+
+      <div class="wnav"><button class="wbback" onclick="wGo(3)">← Volver</button><button class="wbnext" id="wbactivar" onclick="wActivar()">🚀 Activar mi agente</button></div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="wsuccess" id="wsuccess">
+      <div class="wsuccess-icon">🎉</div>
+      <h2 class="wsuccess-title">¡Todo listo!</h2>
+      <p class="wsuccess-sub">Tu agente y tu micro-landing estarán activos en menos de 48 horas. Te avisamos por email.</p>
+      <div class="wsuccess-cards">
+        <div class="wsc-card"><div class="wsc-icon">⏱</div><div class="wsc-lbl">Activación</div><div class="wsc-val">48 hs</div></div>
+        <div class="wsc-card"><div class="wsc-icon">🤖</div><div class="wsc-lbl">Agente</div><div class="wsc-val" id="s-agt">—</div></div>
+        <div class="wsc-card"><div class="wsc-icon">🛍</div><div class="wsc-lbl">Landing</div><div class="wsc-val" id="s-land">Lista</div></div>
+        <div class="wsc-card"><div class="wsc-icon">📩</div><div class="wsc-lbl">Email</div><div class="wsc-val" id="s-email" style="font-size:0.75rem;word-break:break-all">—</div></div>
+      </div>
+      <button class="wbnext" onclick="closeWizard()">Cerrar ✕</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let wStep=1, wPlan={name:'Pro',price:'19.900'}, wGender='', wTone='';
+let prods=[{nombre:'',precio:'',imagen:'',desc:''}];
+
+// ── WIZARD OPEN/CLOSE ──
+function openWizard(){document.getElementById('woverlay').classList.add('open');document.body.style.overflow='hidden';wReset();}
+function closeWizard(){document.getElementById('woverlay').classList.remove('open');document.body.style.overflow='';}
+function handleOvClick(e){if(e.target===document.getElementById('woverlay'))closeWizard();}
+function wReset(){wStep=1;document.querySelectorAll('.wpanel').forEach(p=>p.classList.remove('wact'));document.getElementById('wp1').classList.add('wact');document.getElementById('wsuccess').classList.remove('on');document.getElementById('wprog').style.display='flex';wUpdProg(1);document.getElementById('wbox').scrollTop=0;}
+
+// ── NAVIGATION ──
+function wGo(step){
+  if(step>wStep&&!wValidate(wStep))return;
+  document.querySelectorAll('.wpanel').forEach(p=>p.classList.remove('wact'));
+  document.getElementById('wp'+step).classList.add('wact');
+  wUpdProg(step);
+  if(step===4)wFillResumen();
+  wStep=step;
+  document.getElementById('wbox').scrollTop=0;
+}
+
+function wUpdProg(step){
+  document.querySelectorAll('.wpstep').forEach((s,i)=>{
+    s.classList.remove('wact','wdone');
+    if(i+1<step)s.classList.add('wdone');
+    if(i+1===step)s.classList.add('wact');
+  });
+  document.querySelectorAll('.wpstep.wdone .wpdot').forEach(d=>d.textContent='✓');
+  document.querySelectorAll('.wpstep:not(.wdone) .wpdot').forEach(d=>d.textContent=d.closest('.wpstep').dataset.s);
+}
+
+// ── VALIDATION ──
+function wValidate(step){
+  let ok=true;
+  const rules={
+    1:[{id:'w1nombre'},{id:'w1rubro'},{id:'w1ciudad'},{id:'w1ig'},{id:'w1prod'},{id:'w1precio'},{id:'w1dif'}],
+    2:[{id:'w2nombre'},{id:'w2email',email:true},{id:'w2zona'}],
+    3:[],
+    4:[{id:'w4pnombre'},{id:'w4pnum'},{id:'w4pvenc'},{id:'w4pcvv'}]
+  };
+  (rules[step]||[]).forEach(({id,email})=>{
+    const el=document.getElementById(id);
+    const err=document.getElementById('e-'+id);
+    const v=el.value.trim();
+    const empty=!v||(el.tagName==='SELECT'&&!v);
+    const bad=email&&v&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(empty||bad){el.classList.add('err');err&&err.classList.add('show');ok=false;}
+    else{el.classList.remove('err');err&&err.classList.remove('show');}
+  });
+  return ok;
+}
+
+// ── SELECTORS ──
+function selGender(el,v){document.querySelectorAll('.wgc').forEach(c=>c.classList.remove('on'));el.classList.add('on');wGender=v;}
+function selTone(el,v){document.querySelectorAll('.wtc').forEach(c=>c.classList.remove('on'));el.classList.add('on');wTone=v;}
+function selPlan(el,name,price){document.querySelectorAll('.wplan').forEach(c=>c.classList.remove('on'));el.classList.add('on');wPlan={name,price};document.getElementById('r-total').textContent='$'+price+' ARS';}
+
+// ── BUILDER TABS ──
+function switchTab(tab,panelId){
+  document.querySelectorAll('.btab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.bpanel').forEach(p=>p.classList.remove('on'));
+  tab.classList.add('on');
+  document.getElementById(panelId).classList.add('on');
+}
+
+// ── PRODUCT BUILDER ──
+function renderProds(){
+  const list=document.getElementById('prod-list');
+  list.innerHTML=prods.map((p,i)=>`
+    <div class="prod-item">
+      <div class="prod-item-header">
+        <span class="prod-item-label">Producto ${i+1}</span>
+        <button class="prod-del" onclick="delProd(${i})">✕ Eliminar</button>
+      </div>
+      <div class="prod-fields">
+        <div class="wf"><label class="wlbl">Nombre</label><input class="win" value="${p.nombre}" oninput="prods[${i}].nombre=this.value" placeholder="Nombre del producto"></div>
+        <div class="wf"><label class="wlbl">Precio</label><input class="win" value="${p.precio}" oninput="prods[${i}].precio=this.value" placeholder="$8.900"></div>
+        <div class="wf"><label class="wlbl">Imagen URL</label><input class="win" value="${p.imagen}" oninput="prods[${i}].imagen=this.value" placeholder="https://..."></div>
+        <div class="wf"><label class="wlbl">Descripción</label><input class="win" value="${p.desc}" oninput="prods[${i}].desc=this.value" placeholder="Descripción corta"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addProd(){prods.push({nombre:'',precio:'',imagen:'',desc:''});renderProds();}
+function delProd(i){prods.splice(i,1);renderProds();}
+
+// ── RESUMEN ──
+function wFillResumen(){
+  document.getElementById('r-neg').textContent=document.getElementById('w1nombre').value||'—';
+  document.getElementById('r-ig').textContent=document.getElementById('w1ig').value||'—';
+  const an=document.getElementById('w2nombre').value;
+  document.getElementById('r-agt').textContent=an+(wGender?' ('+wGender+')':'')||'—';
+  document.getElementById('r-zona').textContent=document.getElementById('w2zona').value||'—';
+  const lnombre=document.getElementById('l-nombre').value||document.getElementById('w1nombre').value;
+  document.getElementById('r-land').textContent=lnombre?lnombre+'.vercel.app':'—';
+  const btnText=document.getElementById('l-btntext').value||'Comprá ya 🔥 -20% OFF';
+  document.getElementById('r-btn').textContent=btnText;
+  document.getElementById('r-total').textContent='$'+wPlan.price+' ARS';
+}
+
+// ── ACTIVAR ──
+function wActivar(){
+  if(!wValidate(4))return;
+  const btn=document.getElementById('wbactivar');
+  btn.disabled=true;btn.textContent='Procesando...';
+  setTimeout(()=>{
+    document.querySelectorAll('.wpanel').forEach(p=>p.classList.remove('wact'));
+    document.getElementById('wprog').style.display='none';
+    document.getElementById('s-agt').textContent=document.getElementById('w2nombre').value;
+    document.getElementById('s-email').textContent=document.getElementById('w2email').value;
+    const ln=document.getElementById('l-nombre').value||document.getElementById('w1nombre').value;
+    document.getElementById('s-land').textContent=ln?ln+'.vercel.app':'Lista';
+    document.getElementById('wsuccess').classList.add('on');
+    btn.disabled=false;btn.textContent='🚀 Activar mi agente';
+    document.getElementById('wbox').scrollTop=0;
+  },1800);
+}
+
+// ── FORMAT HELPERS ──
+function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtExp(el){let v=el.value.replace(/\D/g,'').substring(0,4);if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2);el.value=v;}
+
+// ── BOTÓN PREVIEW ──
+document.addEventListener('DOMContentLoaded',()=>{
+  const btnTxt=document.getElementById('l-btntext');
+  const btnPrev=document.getElementById('btn-preview');
+  if(btnTxt&&btnPrev){btnTxt.addEventListener('input',()=>{btnPrev.textContent=btnTxt.value||'Comprá ya 🔥 -20% OFF';});}
+
+  // Color sync
+  ['l-c1','l-c2','l-c3'].forEach(id=>{
+    const picker=document.getElementById(id);
+    const txt=document.getElementById(id+'t');
+    if(picker&&txt){
+      picker.addEventListener('input',()=>txt.value=picker.value);
+      txt.addEventListener('input',()=>picker.value=txt.value);
+    }
+  });
+
+  renderProds();
+});
+
+// ── FAQ ──
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement;
+    const open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!open)item.classList.add('open');
+  });
+});
+
+// ── SCROLL REVEAL ──
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ESC
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeWizard();});
+</script>
+</body>
+</html>
