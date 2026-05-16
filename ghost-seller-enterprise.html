@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost Seller — Enterprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070d;
+  --s1: #0e0e18;
+  --s2: #13131f;
+  --s3: #1c1c2e;
+  --border: rgba(255,255,255,0.055);
+  --border-hi: rgba(255,255,255,0.11);
+  --accent: #6a5fff;
+  --accent-glow: rgba(106,95,255,0.18);
+  --a2: #ff5f8f;
+  --a3: #5fffd4;
+  --a4: #ffc85f;
+  --text: #eeeef8;
+  --t2: #7878a0;
+  --t3: #3a3a58;
+  --green: #3dffa0;
+  --red: #ff3d5e;
+  --r: 14px;
+  --rs: 9px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(106,95,255,0.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 100%,rgba(255,95,143,0.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* ── SIDEBAR ── */
+.sidebar{width:64px;background:var(--s1);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:200;display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:6px}
+.logo{width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.logo-text{font-size:15px;font-weight:800;letter-spacing:-0.04em;color:var(--text);line-height:1}
+.logo-text span{color:var(--accent)}
+.nav{width:40px;height:40px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;color:var(--t3);border:1px solid transparent;position:relative}
+.nav:hover{background:var(--s2);color:var(--t2)}
+.nav.on{background:var(--accent-glow);color:var(--accent);border-color:rgba(106,95,255,0.25)}
+.nav.on::before{content:'';position:absolute;left:-1px;top:28%;bottom:28%;width:2px;background:var(--accent);border-radius:2px}
+.nav-bot{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ava{width:32px;height:32px;border-radius:50%;background:var(--s3);border:1.5px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer}
+
+/* ── MAIN ── */
+.main{margin-left:64px;display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
+
+/* ── TOPBAR ── */
+.topbar{height:58px;background:rgba(7,7,13,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100}
+.tbar-title{font-size:14px;font-weight:600;flex:1}
+.tbar-title em{color:var(--t3);font-style:normal;font-weight:400;margin-left:6px;font-size:12px}
+.live{display:flex;align-items:center;gap:5px;background:rgba(61,255,160,0.07);border:1px solid rgba(61,255,160,0.18);border-radius:20px;padding:4px 11px;font-size:11px;color:var(--green);font-family:'DM Mono',monospace}
+.live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+.tbtn{height:33px;padding:0 14px;border-radius:7px;border:1px solid var(--border-hi);background:var(--s2);color:var(--t2);font-family:'Syne',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+.tbtn:hover{background:var(--s3);color:var(--text)}
+.tbtn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbtn.pri:hover{background:#7d70ff}
+
+/* ── CONTENT ── */
+.content{padding:28px;flex:1}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;background:var(--s1);border:1px solid var(--border);border-radius:var(--rs);padding:3px;width:fit-content;margin-bottom:28px}
+.tab{padding:7px 18px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--t3)}
+.tab.on{background:var(--s3);color:var(--text)}
+.tab:hover:not(.on){color:var(--t2)}
+
+/* ── PLATFORM SELECTOR ── */
+.plat-row{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.plat-label{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
+.plat-btn{display:flex;align-items:center;gap:7px;height:32px;padding:0 14px;border-radius:7px;border:1px solid var(--border);background:var(--s2);color:var(--t2);font-family:'Syne',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.plat-btn:hover{border-color:var(--border-hi);color:var(--text)}
+.plat-btn.on{border-color:var(--accent);background:var(--accent-glow);color:var(--text)}
+.plat-icon{font-size:14px;line-height:1}
+
+/* ── KPI ── */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kcard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;transition:border-color .2s;animation:up .4s ease both}
+.kcard:nth-child(1){animation-delay:.04s}.kcard:nth-child(2){animation-delay:.08s}.kcard:nth-child(3){animation-delay:.12s}.kcard:nth-child(4){animation-delay:.16s}
+.kcard:hover{border-color:var(--border-hi)}
+.kcard::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--kc,var(--accent)),transparent);opacity:.5}
+.klbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.kval{font-size:30px;font-weight:700;line-height:1;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.kdelta{font-size:11px;font-family:'DM Mono',monospace;color:var(--green)}
+.spark{display:flex;align-items:flex-end;gap:2px;height:24px;margin-top:8px}
+.sb{flex:1;border-radius:2px;opacity:.55;transition:opacity .15s}
+.sb:hover{opacity:1}
+
+/* ── CARD ── */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:border-color .2s}
+.card:hover{border-color:var(--border-hi)}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.ctitle{font-size:13px;font-weight:600}
+.ceyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;font-family:'DM Mono',monospace}
+.cbtns{display:flex;gap:6px}
+.cbtn{height:26px;padding:0 11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--t3);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;transition:all .15s}
+.cbtn:hover{border-color:var(--border-hi);color:var(--t2)}
+.cbtn.on{background:var(--s3);color:var(--text);border-color:var(--border-hi)}
+
+/* ── MAIN GRID ── */
+.mgrid{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-bottom:14px}
+
+/* ── CHART ── */
+.cwrap{padding-left:34px;position:relative}
+.cgrid{position:absolute;inset:0 0 26px 34px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+.cgl{border-top:1px dashed rgba(255,255,255,0.04);position:relative}
+.cgl::before{content:attr(data-v);position:absolute;left:-32px;top:-7px;font-size:9px;color:var(--t3);font-family:'DM Mono',monospace}
+.carea{position:relative;height:190px;display:flex;align-items:flex-end;gap:5px;padding-bottom:26px}
+.cbg{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end}
+.cbw{width:100%;display:flex;gap:2px;align-items:flex-end;height:calc(100% - 18px)}
+.cb{flex:1;border-radius:3px 3px 0 0;transition:opacity .15s;cursor:pointer}
+.cb:hover{opacity:.75}
+.cb.b1{background:var(--accent)}
+.cb.b2{background:rgba(106,95,255,0.28)}
+.clbl{font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-top:3px}
+.cleg{display:flex;gap:14px;margin-top:14px}
+.cli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3)}
+.cld{width:8px;height:8px;border-radius:2px}
+
+/* ── AGENTS ── */
+.alist{display:flex;flex-direction:column;gap:10px}
+.aitem{display:flex;align-items:center;gap:10px;padding:12px;background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s}
+.aitem:hover{border-color:var(--border-hi);background:var(--s3)}
+.aava{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ainfo{flex:1;min-width:0}
+.aname{font-size:12px;font-weight:600;margin-bottom:2px}
+.adesc{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ast{display:flex;align-items:center;gap:4px;font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:5px;flex-shrink:0}
+.ast.run{background:rgba(61,255,160,0.07);color:var(--green);border:1px solid rgba(61,255,160,0.14)}
+.ast.idle{background:rgba(120,120,160,0.07);color:var(--t3);border:1px solid var(--border)}
+.ast.err{background:rgba(255,61,94,0.07);color:var(--red);border:1px solid rgba(255,61,94,0.14)}
+.sdot{width:4px;height:4px;border-radius:50%;background:currentColor}
+.sdot.p{animation:blink 2s infinite}
+
+/* ── FLOW ── */
+.fwrap{display:flex;align-items:center;padding:20px 4px;overflow-x:auto;gap:0}
+.fnode{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:82px}
+.ficon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid var(--border);background:var(--s2);transition:all .25s;cursor:pointer}
+.ficon:hover{border-color:var(--accent);box-shadow:0 0 16px var(--accent-glow)}
+.ficon.act{border-color:var(--accent);background:var(--accent-glow);box-shadow:0 0 16px var(--accent-glow)}
+.ficon.ok{border-color:rgba(61,255,160,0.4);background:rgba(61,255,160,0.06)}
+.fnlbl{font-size:9px;text-align:center;color:var(--t3);max-width:74px;line-height:1.3}
+.farrow{color:var(--t3);font-size:16px;padding:0 2px;margin-bottom:18px;flex-shrink:0}
+
+/* ── BOTTOM GRID ── */
+.bgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── FEED ── */
+.flist{display:flex;flex-direction:column;gap:7px}
+.fitem{display:flex;align-items:flex-start;gap:9px;padding:11px;background:var(--s2);border-radius:var(--rs);border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.fitem:hover{border-color:var(--border-hi)}
+.fdot{width:7px;height:7px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.fcont{flex:1;min-width:0}
+.ftitle{font-size:11px;font-weight:600;margin-bottom:2px}
+.fmeta{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftime{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* ── FUNNEL ── */
+.fnl{display:flex;flex-direction:column;gap:7px}
+.fi{position:relative}
+.fbg{height:38px;background:var(--s2);border-radius:7px;overflow:hidden;border:1px solid var(--border);display:flex;align-items:center;position:relative}
+.ff{height:100%;border-radius:7px;position:absolute;left:0;top:0;opacity:.22}
+.fbc{display:flex;align-items:center;justify-content:space-between;padding:0 12px;width:100%;position:relative;z-index:1}
+.fstage{font-size:11px;font-weight:500}
+.fvals{display:flex;gap:14px;align-items:center}
+.fcnt{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.fpct{font-size:10px;font-family:'DM Mono',monospace;color:var(--t3)}
+.div{height:1px;background:var(--border);margin:16px 0}
+.stat3{display:flex;justify-content:space-between;align-items:center}
+.sval{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+.slbl{font-size:10px;color:var(--t3);margin-bottom:3px}
+
+/* ── CONNECTORS ── */
+.cnlist{display:flex;flex-direction:column;gap:7px}
+.cnitem{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--s2);border-radius:var(--rs);border:1px solid var(--border)}
+.cnicon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.cninfo{flex:1}
+.cnname{font-size:11px;font-weight:600}
+.cndet{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace}
+.tog{width:30px;height:17px;border-radius:9px;background:var(--accent);position:relative;cursor:pointer;flex-shrink:0;transition:background .15s}
+.tog.off{background:var(--s3)}
+.tog::after{content:'';position:absolute;width:11px;height:11px;border-radius:50%;background:#fff;top:3px;left:16px;transition:left .15s}
+.tog.off::after{left:3px}
+
+/* ── PLATFORM BADGE ── */
+.pbadge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px;font-weight:500}
+.pb-shop{background:rgba(150,191,107,0.12);color:#96bf6b;border:1px solid rgba(150,191,107,0.2)}
+.pb-woo{background:rgba(150,88,138,0.12);color:#c795bb;border:1px solid rgba(150,88,138,0.2)}
+.pb-tn{background:rgba(0,136,255,0.12);color:#5fb8ff;border:1px solid rgba(0,136,255,0.2)}
+.pb-ml{background:rgba(255,230,0,0.12);color:#ffd84d;border:1px solid rgba(255,230,0,0.2)}
+.pb-cs{background:rgba(106,95,255,0.12);color:var(--accent);border:1px solid rgba(106,95,255,0.2)}
+
+/* ── LOG TABLE ── */
+.ltable{width:100%;border-collapse:collapse}
+.ltable th{text-align:left;font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:0 8px 11px;border-bottom:1px solid var(--border)}
+.ltable td{padding:9px 8px;font-size:11px;border-bottom:1px solid rgba(255,255,255,0.025);vertical-align:middle}
+.ltable tr:last-child td{border-bottom:none}
+.ltable tr:hover td{background:rgba(255,255,255,0.015)}
+.lid{font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)}
+.lact{color:var(--t2)}
+.lst{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px}
+.lst.ok{background:rgba(61,255,160,0.07);color:var(--green)}
+.lst.pend{background:rgba(255,200,95,0.07);color:var(--a4)}
+.lst.fail{background:rgba(255,61,94,0.07);color:var(--red)}
+
+/* ── PILL ── */
+.pill{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-family:'DM Mono',monospace;font-weight:500}
+.p-v{background:rgba(106,95,255,0.1);color:var(--accent);border:1px solid rgba(106,95,255,0.18)}
+.p-pk{background:rgba(255,95,143,0.1);color:var(--a2);border:1px solid rgba(255,95,143,0.18)}
+.p-g{background:rgba(61,255,160,0.07);color:var(--green);border:1px solid rgba(61,255,160,0.14)}
+
+/* ── SECTION DIVIDER ── */
+.sdiv{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sdiv-line{flex:1;height:1px;background:var(--border)}
+.sdiv-label{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+
+/* ── ANIMATIONS ── */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){.kgrid{grid-template-columns:repeat(2,1fr)}.mgrid{grid-template-columns:1fr}.bgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.content{padding:16px}.bgrid{grid-template-columns:1fr}.kgrid{grid-template-columns:repeat(2,1fr)}.plat-row{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="app" style="display:flex;min-height:100vh">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo"><div class="logo-text">GS<span>.</span></div></div>
+
+  <div class="nav on" title="Overview">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+  </div>
+  <div class="nav" title="Agentes">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+  </div>
+  <div class="nav" title="Leads">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  </div>
+  <div class="nav" title="Conectores">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h2M18 15V9a3 3 0 0 0-3-3h-2"/></svg>
+  </div>
+  <div class="nav" title="Logs">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  </div>
+  <div class="nav" title="Analytics">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+  </div>
+  <div class="nav" title="Configuración">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </div>
+
+  <div class="nav-bot">
+    <div class="nav" title="Notificaciones" style="position:relative">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span style="position:absolute;top:7px;right:7px;width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid var(--bg)"></span>
+    </div>
+    <div class="ava">JD</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="tbar-title">Dashboard <em>/ Overview</em></div>
+    <div class="live"><div class="live-dot"></div>Agente corriendo</div>
+    <button class="tbtn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/></svg>
+      Filtrar
+    </button>
+    <button class="tbtn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar
+    </button>
+    <button class="tbtn pri">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nuevo agente
+    </button>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab on">Overview</div>
+      <div class="tab">Agentes</div>
+      <div class="tab">Leads</div>
+      <div class="tab">Conectores</div>
+      <div class="tab">Logs</div>
+      <div class="tab">Configuración</div>
+    </div>
+
+    <!-- PLATFORM SELECTOR -->
+    <div class="plat-row">
+      <span class="plat-label">Plataforma —</span>
+      <button class="plat-btn on" data-p="all"><span class="plat-icon">⊞</span>Todas</button>
+      <button class="plat-btn" data-p="shopify"><span class="plat-icon">🛍</span>Shopify</button>
+      <button class="plat-btn" data-p="tiendanube"><span class="plat-icon">☁️</span>Tienda Nube</button>
+      <button class="plat-btn" data-p="woo"><span class="plat-icon">🔵</span>WooCommerce</button>
+      <button class="plat-btn" data-p="ml"><span class="plat-icon">🟡</span>MercadoLibre</button>
+      <button class="plat-btn" data-p="custom"><span class="plat-icon">⚙️</span>Custom</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kgrid">
+      <div class="kcard" style="--kc:var(--accent)">
+        <div class="klbl">Carritos detectados <span>🛒</span></div>
+        <div class="kval" style="color:var(--accent)">3,847</div>
+        <div class="kdelta">↑ +21.3% esta semana</div>
+        <div class="spark">
+          <div class="sb" style="height:38%;background:var(--accent)"></div><div class="sb" style="height:52%;background:var(--accent)"></div><div class="sb" style="height:34%;background:var(--accent)"></div><div class="sb" style="height:68%;background:var(--accent)"></div><div class="sb" style="height:55%;background:var(--accent)"></div><div class="sb" style="height:78%;background:var(--accent)"></div><div class="sb" style="height:64%;background:var(--accent)"></div><div class="sb" style="height:100%;background:var(--accent)"></div>
+        </div>
+      </div>
+      <div class="kcard" style="--kc:var(--a2)">
+        <div class="klbl">Mensajes enviados <span>💬</span></div>
+        <div class="kval" style="color:var(--a2)">2,961</div>
+        <div class="kdelta">↑ +14.7% esta semana</div>
+        <div class="spark">
+          <div class="sb" style="height:44%;background:var(--a2)"></div><div class="sb" style="height:38%;background:var(--a2)"></div><div class="sb" style="height:60%;background:var(--a2)"></div><div class="sb" style="height:50%;background:var(--a2)"></div><div class="sb" style="height:72%;background:var(--a2)"></div><div class="sb" style="height:58%;background:var(--a2)"></div><div class="sb" style="height:84%;background:var(--a2)"></div><div class="sb" style="height:100%;background:var(--a2)"></div>
+        </div>
+      </div>
+      <div class="kcard" style="--kc:var(--green)">
+        <div class="klbl">Recuperados <span>✓</span></div>
+        <div class="kval" style="color:var(--green)">642</div>
+        <div class="kdelta">↑ +28.9% esta semana</div>
+        <div class="spark">
+          <div class="sb" style="height:28%;background:var(--green)"></div><div class="sb" style="height:42%;background:var(--green)"></div><div class="sb" style="height:38%;background:var(--green)"></div><div class="sb" style="height:58%;background:var(--green)"></div><div class="sb" style="height:52%;background:var(--green)"></div><div class="sb" style="height:74%;background:var(--green)"></div><div class="sb" style="height:80%;background:var(--green)"></div><div class="sb" style="height:100%;background:var(--green)"></div>
+        </div>
+      </div>
+      <div class="kcard" style="--kc:var(--a4)">
+        <div class="klbl">Revenue recuperado <span>$</span></div>
+        <div class="kval" style="color:var(--a4)">$114.8K</div>
+        <div class="kdelta">↑ +36.2% esta semana</div>
+        <div class="spark">
+          <div class="sb" style="height:22%;background:var(--a4)"></div><div class="sb" style="height:38%;background:var(--a4)"></div><div class="sb" style="height:32%;background:var(--a4)"></div><div class="sb" style="height:54%;background:var(--a4)"></div><div class="sb" style="height:48%;background:var(--a4)"></div><div class="sb" style="height:68%;background:var(--a4)"></div><div class="sb" style="height:82%;background:var(--a4)"></div><div class="sb" style="height:100%;background:var(--a4)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOW -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="ch">
+        <div><div class="ceyebrow">Pipeline en tiempo real</div><div class="ctitle">Flujo del agente — Cart Recovery</div></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="pbadge pb-shop">Shopify</span>
+          <span class="pbadge pb-tn">Tienda Nube</span>
+          <span class="pbadge pb-woo">WooCommerce</span>
+          <span class="pbadge pb-ml">MercadoLibre</span>
+          <div class="live" style="margin-left:4px"><div class="live-dot"></div>4 activos</div>
+        </div>
+      </div>
+      <div class="fwrap">
+        <div class="fnode"><div class="ficon ok">🛒</div><div class="fnlbl">Carrito abandonado</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon ok">🔗</div><div class="fnlbl">Webhook plataforma</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon act">⚙️</div><div class="fnlbl">n8n procesa</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon act">🧠</div><div class="fnlbl">IA clasifica lead</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon">🗄️</div><div class="fnlbl">Consulta Supabase</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon">✍️</div><div class="fnlbl">Genera mensaje</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon">📱</div><div class="fnlbl">Envía WhatsApp</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode"><div class="ficon">📋</div><div class="fnlbl">Log auditoría</div></div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="mgrid">
+
+      <!-- CHART -->
+      <div class="card">
+        <div class="ch">
+          <div><div class="ceyebrow">Performance semanal</div><div class="ctitle">Detectados vs Recuperados</div></div>
+          <div class="cbtns">
+            <button class="cbtn on">7D</button>
+            <button class="cbtn">30D</button>
+            <button class="cbtn">90D</button>
+          </div>
+        </div>
+        <div class="cwrap">
+          <div class="cgrid">
+            <div class="cgl" data-v="500"></div>
+            <div class="cgl" data-v="350"></div>
+            <div class="cgl" data-v="200"></div>
+            <div class="cgl" data-v="50"></div>
+          </div>
+          <div class="carea">
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:48%"></div><div class="cb b2" style="height:16%"></div></div><div class="clbl">Lun</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:64%"></div><div class="cb b2" style="height:20%"></div></div><div class="clbl">Mar</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:42%"></div><div class="cb b2" style="height:13%"></div></div><div class="clbl">Mié</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:78%"></div><div class="cb b2" style="height:26%"></div></div><div class="clbl">Jue</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:70%"></div><div class="cb b2" style="height:22%"></div></div><div class="clbl">Vie</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:88%"></div><div class="cb b2" style="height:30%"></div></div><div class="clbl">Sáb</div></div>
+            <div class="cbg"><div class="cbw"><div class="cb b1" style="height:100%"></div><div class="cb b2" style="height:34%"></div></div><div class="clbl">Dom</div></div>
+          </div>
+        </div>
+        <div class="cleg">
+          <div class="cli"><div class="cld" style="background:var(--accent)"></div>Detectados</div>
+          <div class="cli"><div class="cld" style="background:rgba(106,95,255,0.28)"></div>Recuperados</div>
+        </div>
+      </div>
+
+      <!-- AGENTS -->
+      <div class="card">
+        <div class="ch">
+          <div><div class="ceyebrow">Sistema</div><div class="ctitle">Agentes activos</div></div>
+          <button class="cbtn">Ver todos</button>
+        </div>
+        <div class="alist">
+          <div class="aitem">
+            <div class="aava" style="background:rgba(106,95,255,0.1)">🤖</div>
+            <div class="ainfo"><div class="aname">Cart Recovery</div><div class="adesc">Shopify + TN + Woo → WhatsApp</div></div>
+            <div class="ast run"><div class="sdot p"></div>activo</div>
+          </div>
+          <div class="aitem">
+            <div class="aava" style="background:rgba(255,95,143,0.1)">🎯</div>
+            <div class="ainfo"><div class="aname">Lead Qualifier</div><div class="adesc">ML + Instagram → Supabase</div></div>
+            <div class="ast run"><div class="sdot p"></div>activo</div>
+          </div>
+          <div class="aitem">
+            <div class="aava" style="background:rgba(95,255,212,0.1)">📊</div>
+            <div class="ainfo"><div class="aname">Analytics Bot</div><div class="adesc">Reporte diario → Email</div></div>
+            <div class="ast idle"><div class="sdot"></div>idle</div>
+          </div>
+          <div class="aitem">
+            <div class="aava" style="background:rgba(255,200,95,0.1)">⚡</div>
+            <div class="ainfo"><div class="aname">Upsell Agent</div><div class="adesc">Post-compra · Gemini Pro</div></div>
+            <div class="ast err"><div class="sdot"></div>error</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM GRID -->
+    <div class="bgrid">
+
+      <!-- FEED -->
+      <div class="card">
+        <div class="ch">
+          <div><div class="ceyebrow">Actividad</div><div class="ctitle">Feed en tiempo real</div></div>
+          <div class="live" style="font-size:10px"><div class="live-dot"></div>live</div>
+        </div>
+        <div class="flist">
+          <div class="fitem"><div class="fdot" style="background:var(--green)"></div><div class="fcont"><div class="ftitle">Carrito recuperado — $214 <span class="pbadge pb-shop" style="margin-left:4px">Shopify</span></div><div class="fmeta">usr_4821 · WhatsApp · pago confirmado</div></div><div class="ftime">2m</div></div>
+          <div class="fitem"><div class="fdot" style="background:var(--accent)"></div><div class="fcont"><div class="ftitle">Nuevo lead detectado <span class="pbadge pb-tn" style="margin-left:4px">TN</span></div><div class="fmeta">usr_3390 · carrito $340 · alto valor</div></div><div class="ftime">5m</div></div>
+          <div class="fitem"><div class="fdot" style="background:var(--a4)"></div><div class="fcont"><div class="ftitle">Seguimiento enviado <span class="pbadge pb-woo" style="margin-left:4px">Woo</span></div><div class="fmeta">usr_2871 · carrito $89 · sin respuesta</div></div><div class="ftime">11m</div></div>
+          <div class="fitem"><div class="fdot" style="background:var(--red)"></div><div class="fcont"><div class="ftitle">Timeout WhatsApp <span class="pbadge pb-ml" style="margin-left:4px">ML</span></div><div class="fmeta">usr_1942 · reintentando en 5 min</div></div><div class="ftime">18m</div></div>
+          <div class="fitem"><div class="fdot" style="background:var(--green)"></div><div class="fcont"><div class="ftitle">Carrito recuperado — $580 <span class="pbadge pb-shop" style="margin-left:4px">Shopify</span></div><div class="fmeta">usr_0944 · 3er mensaje · pagado</div></div><div class="ftime">24m</div></div>
+        </div>
+      </div>
+
+      <!-- FUNNEL -->
+      <div class="card">
+        <div class="ch"><div><div class="ceyebrow">Conversión</div><div class="ctitle">Funnel de recuperación</div></div></div>
+        <div class="fnl">
+          <div class="fi"><div class="fbg"><div class="ff" style="width:100%;background:var(--accent)"></div><div class="fbc"><span class="fstage">Detectados</span><div class="fvals"><span class="fcnt">3,847</span><span class="fpct">100%</span></div></div></div></div>
+          <div class="fi"><div class="fbg"><div class="ff" style="width:77%;background:var(--a2)"></div><div class="fbc"><span class="fstage">Mensajes enviados</span><div class="fvals"><span class="fcnt">2,961</span><span class="fpct">76.9%</span></div></div></div></div>
+          <div class="fi"><div class="fbg"><div class="ff" style="width:43%;background:var(--a4)"></div><div class="fbc"><span class="fstage">Respondieron</span><div class="fvals"><span class="fcnt">1,658</span><span class="fpct">43.1%</span></div></div></div></div>
+          <div class="fi"><div class="fbg"><div class="ff" style="width:17%;background:var(--green)"></div><div class="fbc"><span class="fstage">Compraron</span><div class="fvals"><span class="fcnt">642</span><span class="fpct">16.7%</span></div></div></div></div>
+        </div>
+        <div class="div"></div>
+        <div class="stat3">
+          <div><div class="slbl">Conversión total</div><div class="sval" style="color:var(--green)">16.7%</div></div>
+          <div><div class="slbl">Revenue</div><div class="sval" style="color:var(--a4)">$114.8K</div></div>
+          <div><div class="slbl">Ticket prom.</div><div class="sval" style="color:var(--accent)">$179</div></div>
+        </div>
+      </div>
+
+      <!-- CONNECTORS -->
+      <div class="card">
+        <div class="ch"><div><div class="ceyebrow">Integraciones</div><div class="ctitle">Conectores activos</div></div><button class="cbtn">+ Agregar</button></div>
+        <div class="cnlist">
+          <div class="cnitem"><div class="cnicon" style="background:rgba(150,191,107,0.1)">🛍️</div><div class="cninfo"><div class="cnname">Shopify</div><div class="cndet">webhooks · cart/orders</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(0,136,255,0.1)">☁️</div><div class="cninfo"><div class="cnname">Tienda Nube</div><div class="cndet">API v1 · abandonos</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(150,88,138,0.1)">🔵</div><div class="cninfo"><div class="cnname">WooCommerce</div><div class="cndet">REST API · webhooks</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(255,230,0,0.1)">🟡</div><div class="cninfo"><div class="cnname">MercadoLibre</div><div class="cndet">preguntas · mensajes</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(37,211,102,0.1)">💬</div><div class="cninfo"><div class="cnname">WhatsApp Business</div><div class="cndet">Meta Cloud API</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(106,95,255,0.1)">🧠</div><div class="cninfo"><div class="cnname">Claude API</div><div class="cndet">claude-sonnet · activo</div></div><div class="tog"></div></div>
+          <div class="cnitem"><div class="cnicon" style="background:rgba(120,120,160,0.1)">📊</div><div class="cninfo"><div class="cnname">HubSpot CRM</div><div class="cndet">no conectado</div></div><div class="tog off"></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LOG TABLE -->
+    <div class="card" style="margin-top:14px">
+      <div class="ch">
+        <div><div class="ceyebrow">Auditoría</div><div class="ctitle">Log de acciones recientes</div></div>
+        <div class="cbtns">
+          <button class="cbtn on">Todas</button>
+          <button class="cbtn">Errores</button>
+          <button class="cbtn">Exitosas</button>
+        </div>
+      </div>
+      <table class="ltable">
+        <thead>
+          <tr><th>Correlation ID</th><th>Plataforma</th><th>Acción</th><th>Fuente</th><th>Destino</th><th>Latencia</th><th>Estado</th><th>Timestamp</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="lid">a3f8-9e21</span></td><td><span class="pbadge pb-shop">Shopify</span></td><td class="lact">Mensaje recuperación enviado</td><td><span class="pill p-v">webhook</span></td><td><span class="pill p-g">WhatsApp</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">284ms</td><td><span class="lst ok">● OK</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">hace 2m</td></tr>
+          <tr><td><span class="lid">b7c2-1a44</span></td><td><span class="pbadge pb-tn">Tienda Nube</span></td><td class="lact">Lead clasificado alto valor</td><td><span class="pill p-v">webhook</span></td><td><span class="pill p-v">Supabase</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">512ms</td><td><span class="lst ok">● OK</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">hace 5m</td></tr>
+          <tr><td><span class="lid">c1d9-4f88</span></td><td><span class="pbadge pb-woo">WooCommerce</span></td><td class="lact">Seguimiento programado</td><td><span class="pill p-v">Supabase</span></td><td><span class="pill p-g">WhatsApp</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">196ms</td><td><span class="lst pend">◐ pending</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">hace 11m</td></tr>
+          <tr><td><span class="lid">d4e6-2b77</span></td><td><span class="pbadge pb-ml">MercadoLibre</span></td><td class="lact">WhatsApp API timeout</td><td><span class="pill p-v">n8n</span></td><td><span class="pill p-g">WhatsApp</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red)">30001ms</td><td><span class="lst fail">✕ error</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">hace 18m</td></tr>
+          <tr><td><span class="lid">e9a1-3c55</span></td><td><span class="pbadge pb-shop">Shopify</span></td><td class="lact">Pago confirmado post-recovery</td><td><span class="pill p-v">webhook</span></td><td><span class="pill p-v">Supabase</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">341ms</td><td><span class="lst ok">● OK</span></td><td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--t3)">hace 24m</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on')}));
+document.querySelectorAll('.plat-btn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.plat-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on')}));
+document.querySelectorAll('.cbtns .cbtn').forEach(b=>b.addEventListener('click',()=>{b.closest('.cbtns').querySelectorAll('.cbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on')}));
+document.querySelectorAll('.tog').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('off')));
+document.querySelectorAll('.nav').forEach(n=>n.addEventListener('click',()=>{document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));n.classList.add('on')}));
+</script>
+</body>
+</html>
